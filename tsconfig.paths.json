@@ -1,0 +1,29 @@
+{
+  "compilerOptions":{
+     "allowSyntheticDefaultImports":true,
+     "experimentalDecorators":true,
+     "isolatedModules":false,
+     "jsx":"react-jsx",
+     "baseUrl":"./",
+     "paths":{
+        "@assets/*":[
+           "src/assets/*"
+        ],
+        "@pages/*":[
+           "src/pages/*"
+        ],
+        "@contracts":[
+           "src/contracts"
+        ],
+        "@components":[
+           "src/components"
+        ],
+        "@errors":[
+           "src/errors"
+        ],
+        "@layout":[
+           "src/layout"
+        ]
+     }
+  }
+}

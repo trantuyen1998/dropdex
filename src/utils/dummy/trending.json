@@ -1,0 +1,20 @@
+[
+  {
+    "pairAddress": "BTC"
+  },
+  {
+    "pairAddress": "BUSD"
+  },
+  {
+    "pairAddress": "ETH"
+  },
+  {
+    "pairAddress": "SOL"
+  },
+  {
+    "pairAddress": "XRP"
+  },
+  {
+    "pairAddress": "GMT"
+  }
+]

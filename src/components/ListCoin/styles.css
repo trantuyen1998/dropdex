@@ -1,0 +1,10 @@
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.pagination-item {
+  background-color: #182033;
+  padding: 8px 8px;
+}

@@ -1,0 +1,13 @@
+export { ReactComponent as coinhall } from './coinhall.svg';
+export { ReactComponent as exchange } from './exchange.svg';
+export { ReactComponent as verified } from './verified.svg';
+export { ReactComponent as link } from './link.svg';
+export { ReactComponent as telegram } from './telegram.svg';
+export { ReactComponent as twitter } from './twitter.svg';
+export { ReactComponent as media } from './media.svg';
+export { ReactComponent as monkey } from './monkey.svg';
+export { ReactComponent as info } from './info.svg';
+export { ReactComponent as star } from './star.svg';
+export { ReactComponent as swap } from './swap.svg';
+export { ReactComponent as ring } from './ring.svg';
+export { ReactComponent as tx } from './tx.svg';

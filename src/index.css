@@ -1,0 +1,121 @@
+:root {
+  --container-width: 1440px;
+}
+html {
+  background-color: #0f0f0f;
+  font-family: 'Inter', 'Work Sans', 'sans-serif';
+}
+
+@font-face {
+  font-family: 'Nunito Sans';
+  src: local('Nunito Sans'), url('./assets/fonts/nunito-sans.woff2') format('truetype');
+}
+
+@font-face {
+  font-family: 'Nunito Sans';
+  src: local('Nunito Sans'), url('./assets/fonts/nunito-sans.woff2') format('truetype');
+}
+
+@font-face {
+  font-family: 'Ubuntu Mono';
+  src: local('Ubuntu Mono'), url('./assets/fonts/ubuntu-mono.woff2') format('truetype');
+}
+
+::-webkit-scrollbar {
+  height: 0.25rem;
+  width: 0.25rem;
+}
+
+::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 999999px;
+  background-color: rgba(203, 213, 225, 0.9);
+}
+
+::-webkit-scrollbar-track-piece {
+  background-color: transparent;
+}
+
+a,
+li,
+button:focus {
+  box-shadow: none !important;
+}
+
+button:active {
+  background: transparent !important;
+}
+
+.chakra-ui-light {
+  --trading-board: #f5f5f5;
+  --ag-row-selected: #dbf2ed;
+  --color-up: #4aa165;
+  --color-down: #d16547;
+  --color-text: #333;
+  --color-active: #fff;
+  --color-header-ag: #333;
+  --sidebar-ag: '#f5f5f5';
+  --info-board: #fff;
+  --pagination-item-color: #e9eef7;
+  --pagination-active-color: #1e4d50;
+  --border-color: #ebebeb;
+}
+
+.chakra-ui-dark {
+  --trading-board: #1e3446;
+  --ag-row-selected: #304b61;
+  --color-up: #00d341;
+  --color-down: #ff4c42;
+  --color-text: white;
+  --color-active: #333;
+  --color-header-ag: #848e9c;
+  --sidebar-ag: #2e4960;
+  --info-board: #162a3a;
+  --pagination-item-color: #405b73;
+  --pagination-active-color: #fff;
+  --border-color: #162a3a;
+}
+
+.text-uptrend {
+  color: var(--color-up) !important;
+}
+
+.text-downtrend {
+  color: var(--color-down) !important;
+}
+
+.theme-dark:root {
+  --tv-color-platform-background: red;
+  --tv-color-pane-background: red;
+  --tv-color-toolbar-button-background-hover: rgb(244, 143, 177);
+  --tv-color-toolbar-button-background-expanded: rgb(244, 143, 177);
+  --tv-color-toolbar-button-background-active: rgb(249, 185, 233);
+  --tv-color-toolbar-button-background-active-hover: rgb(244, 143, 177);
+  --tv-color-toolbar-button-text: rgb(136, 24, 79);
+  --tv-color-toolbar-button-text-hover: rgb(74, 20, 140);
+  --tv-color-toolbar-button-text-active: red;
+  --tv-color-toolbar-button-text-active-hover: red;
+  --tv-color-item-active-text: rgb(6, 255, 6);
+  --tv-color-toolbar-toggle-button-background-active: red;
+  --tv-color-toolbar-toggle-button-background-active-hover: magenta;
+  --tv-color-toolbar-divider-background: rgb(251, 223, 244);
+  --tv-color-toolbar-save-layout-loader: rgb(134, 137, 147);
+
+  --tv-color-popup-background: rgb(241, 188, 225);
+  --tv-color-popup-element-text: rgb(136, 24, 79);
+  --tv-color-popup-element-text-hover: rgb(74, 20, 140);
+  --tv-color-popup-element-background-hover: rgb(244, 143, 177);
+  --tv-color-popup-element-divider-background: rgb(251, 223, 244);
+  --tv-color-popup-element-secondary-text: rgb(74, 20, 140);
+  --tv-color-popup-element-hint-text: rgb(74, 20, 140);
+  --tv-color-popup-element-text-active: rgb(6, 6, 255);
+  --tv-color-popup-element-background-active: red;
+  --tv-color-popup-element-toolbox-text: rgb(136, 24, 79);
+  --tv-color-popup-element-toolbox-text-hover: rgb(74, 20, 140);
+  --tv-color-popup-element-toolbox-text-active-hover: rgb(74, 20, 140);
+  --tv-color-popup-element-toolbox-background-hover: rgb(222, 89, 132);
+  --tv-color-popup-element-toolbox-background-active-hover: magenta;
+}
