@@ -24,8 +24,8 @@ export const useSwapDex = () => {
   const [swapDisabled, setSwapDisabled] = useState<boolean>(false);
 
   const updateUniBalance = async () => {
-    const uniBalance = await (uni as AbiUni).balanceOf(address);
-    setUniBalance(uniBalance);
+    const uniBalanceOf = await (uni as AbiUni).balanceOf(address);
+    setUniBalance(uniBalanceOf);
   };
 
   useEffect(() => {
@@ -35,8 +35,8 @@ export const useSwapDex = () => {
   }, [uni, address]);
 
   const updateTokBalance = async () => {
-    const tokBalance = await (tok as AbiToken).balanceOf(address);
-    setTokBalance(tokBalance);
+    const tokBalanceOf = await (tok as AbiToken).balanceOf(address);
+    setTokBalance(tokBalanceOf);
   };
 
   useEffect(() => {

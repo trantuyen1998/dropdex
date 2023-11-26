@@ -1,13 +1,13 @@
-import { Box, Button, Flex, Image, Stack, Text, Theme, useTheme } from '@chakra-ui/react';
+import { Box, Button, Flex, Image, Text, Theme, useTheme } from '@chakra-ui/react';
 import { PairType } from 'components/ListCoin/type';
 import { memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Colors } from 'themes/colors';
-import { borderColorMap, formatPrice, getDex, getTitle } from 'utils/helper';
+import { formatPrice } from 'utils/helper';
 
 type Props = PairType;
 const CoinCard = (props: Props) => {
-  const navigate = useNavigate();
+  const { asset0, asset1, volume24H, fee, avgAPR, poolAmount, tvl, fee24H } = props;
   const theme = useTheme<Theme>();
   const colors = theme.colors as Colors;
 
@@ -29,21 +29,21 @@ const CoinCard = (props: Props) => {
         <Box>
           <Box display={'flex'} flexDirection={'row'}>
             <Box>
-              <Image src={props.asset0.symbol} width={'20px'} height={'20px'} />
+              <Image src={asset0.symbol} width={'20px'} height={'20px'} />
             </Box>
             <Box>
-              <Image src={props.asset1.symbol} width={'20px'} height={'20px'} />
+              <Image src={asset1.symbol} width={'20px'} height={'20px'} />
             </Box>
           </Box>
         </Box>
         <Box marginLeft={4}>
           <Text fontSize={'1.6rem'} fontFamily="Work Sans" fontWeight={500}>
-            {props.asset0.name} - {props.asset0.name}
+            {asset0.name} - {asset0.name}
           </Text>
         </Box>
         <Box marginLeft={4}>
           <Text fontSize={'1.2rem'} fontWeight={400} backgroundColor={'#1183B733'} borderRadius="10px" padding={'2px 6px'}>
-            Fee {props.fee}%
+            Fee {fee}%
           </Text>
         </Box>
       </Box>
@@ -52,7 +52,7 @@ const CoinCard = (props: Props) => {
         Avg APR
       </Text>
       <Text fontWeight={500} fontFamily={'Work Sans'} fontSize={'2.8rem'} color="rgb(15, 170, 162)">
-        {props.avgAPR ?? 0}%
+        {avgAPR ?? 0}%
       </Text>
       <Box display={'flex'} justifyContent="space-between" borderBottomWidth={'1px'} borderColor="rgb(80, 80, 80)">
         <Box marginBottom={'1.6rem'}>
@@ -60,7 +60,7 @@ const CoinCard = (props: Props) => {
             Volume (24H)
           </Text>
           <Text fontWeight={500} fontFamily={'Work Sans'} fontSize={'1.6rem'} color="#FFF">
-            ${props.volume24H ?? 0}
+            ${volume24H ?? 0}
           </Text>
         </Box>
         <Box>
@@ -68,7 +68,7 @@ const CoinCard = (props: Props) => {
             Fees (24H)
           </Text>
           <Text fontWeight={500} fontFamily={'Work Sans'} fontSize={'1.6rem'} color="#FFF">
-            ${props.fee24H ?? 0}
+            ${fee24H ?? 0}
           </Text>
         </Box>
       </Box>
@@ -78,7 +78,7 @@ const CoinCard = (props: Props) => {
             TVL
           </Text>
           <Text fontWeight={500} fontFamily={'Work Sans'} fontSize={'1.6rem'} color="#FFF">
-            ${props.tvl ?? 0}
+            ${tvl ?? 0}
           </Text>
         </Box>
         <Box>
@@ -86,7 +86,7 @@ const CoinCard = (props: Props) => {
             Total Liqidity
           </Text>
           <Text fontWeight={500} fontFamily={'Work Sans'} fontSize={'1.6rem'} color="#FFF">
-            ${formatPrice(props.poolAmount) ?? 0}
+            ${formatPrice(poolAmount) ?? 0}
           </Text>
         </Box>
       </Box>

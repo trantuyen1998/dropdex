@@ -25,8 +25,8 @@ export const useWeb3 = () => {
       setConnected(true);
 
       const getAddress = async () => {
-        const provider = await web3Modal.connect();
-        const ethersProvider = new providers.Web3Provider(provider);
+        const providerWeb3 = await web3Modal.connect();
+        const ethersProvider = new providers.Web3Provider(providerWeb3);
         const userAddress = await ethersProvider.getSigner().getAddress();
         setAddress(userAddress);
         setProvider(ethersProvider);
@@ -38,8 +38,8 @@ export const useWeb3 = () => {
 
   const connectWallet = async () => {
     if (!!web3Modal) {
-      const provider = await web3Modal.connect();
-      const ethersProvider = new providers.Web3Provider(provider);
+      const providerWeb3 = await web3Modal.connect();
+      const ethersProvider = new providers.Web3Provider(providerWeb3);
       const userAddress = await ethersProvider.getSigner().getAddress();
       setAddress(userAddress);
       setProvider(ethersProvider);
