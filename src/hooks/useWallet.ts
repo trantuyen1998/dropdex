@@ -2,7 +2,7 @@ import { NETWORK, APP_NETWORK } from 'constants/networks';
 import Web3Modal from 'web3modal';
 import React, { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
-import { toHex } from 'utils/helper';
+import { handleMetamaskError, toHex } from 'utils/helper';
 import { checkMetamaskInstalled } from 'utils/wallet';
 import { useDisclosure } from '@chakra-ui/react';
 
@@ -70,6 +70,7 @@ const useWallet = () => {
       //   onClose();
     } catch (error: any) {
       setErrors(error);
+      handleMetamaskError(error);
       throw new Error(error);
     }
   };

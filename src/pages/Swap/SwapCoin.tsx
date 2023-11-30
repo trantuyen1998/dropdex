@@ -6,22 +6,15 @@ import {
   AccordionPanel,
   Box,
   Button,
-  Center,
-  Collapse,
-  Image,
+  Center, Image,
   Input,
   Spinner,
   Text,
   Theme,
   useDisclosure,
-  useTheme,
+  useTheme
 } from '@chakra-ui/react';
-import { useGetContextSwap } from 'hooks/useGetContextSwap';
-import { useGetPairByAddress } from 'hooks/useGetPairByAddress';
-import { useGetTx } from 'hooks/useGetTx';
-import { isEmpty } from 'lodash';
 import { Pairs, Tx } from 'models/Pairs';
-import { useHomeStore } from 'pages/Home/store/useHomeStore';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Colors } from 'themes/colors';
@@ -32,14 +25,11 @@ const SwapCoin = () => {
   const param = useParams();
   const theme = useTheme<Theme>();
   const colors = theme.colors as Colors;
-  const { pairs: coins } = useHomeStore();
   const [txs, setTxs] = useState<Tx[]>([]);
   const [addresses, setAddresses] = useState<Pairs[]>([]);
   const [pairInfo, setPairInfo] = useState<any>();
   const [contextSwap, setContextSwap] = useState<any>();
-  const { data: dataTx, isLoading: loadingTx } = useGetTx(param.pairAddress);
-  const { data: pairAddresses, isLoading: loadingPA } = useGetPairByAddress(param.pairAddress);
-  const { data: dataSwap, isLoading: loadingDS } = useGetContextSwap(`/${param.chain?.toLowerCase()}/${param.pairAddress}`);
+
   const { swapToken, swapDisabled, connected, address } = useSwapDex();
   const [show, setShow] = useState<boolean>(false);
 
@@ -50,31 +40,7 @@ const SwapCoin = () => {
       }
     });
   }, []);
-  useEffect(() => {
-    if (dataTx && !isEmpty(dataTx)) {
-      setTxs(dataTx.txs);
-    }
-  }, [dataTx, param]);
 
-  useEffect(() => {
-    if (dataSwap && !isEmpty(dataSwap)) {
-      const pageContext = dataSwap.pageContext;
-      setContextSwap(pageContext);
-      setPairInfo(pageContext.pageProps.pairInfo);
-    }
-  }, [dataSwap, param]);
-
-  const btn = {
-    width: 'calc(100% / 3 - 4px)',
-    background: `${colors.bg3}`,
-    height: '42px',
-    display: 'flex',
-    alignItems: 'center',
-    fontFamily: 'Nunito Sans',
-    fontSize: '18px',
-    color: colors.light2,
-    fontWeight: 600,
-  };
   const renderLoading = () => {
     return (
       <Center height="100%">
@@ -276,7 +242,7 @@ const SwapCoin = () => {
             </Text>
           </Button>
 
-          <Box mt={'16px'}>
+          <Box mt={'16px'} >
             <Accordion allowToggle>
               <AccordionItem border={'1px solid #505050'} background="rgb(15, 15, 15)" borderRadius={'16px'}>
                 <Box display={'flex'} justifyContent="center">

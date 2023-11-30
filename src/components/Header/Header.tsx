@@ -1,6 +1,6 @@
 import { Box, Button, Flex, IconButton, Link, Stack, Text, useDisclosure, useMediaQuery } from '@chakra-ui/react';
 import CustomLink from 'components/CustomLink/CustomLink';
-import LogoLuna from 'components/LogoLuna/LogoLuna';
+import { PNGIcon } from 'components/PNGIcon';
 import { motion } from 'framer-motion';
 import { useEffect } from 'react';
 import { AiOutlineMenu } from 'react-icons/ai';
@@ -33,8 +33,9 @@ export default function Header({ onConnectedWallet, account, onDisconnect }: Pro
   return (
     <Flex justifyContent="space-between" alignItems="center" height="4rem" borderBottom="1px solid rgba(30, 41, 59, 0.8)" position="relative">
       <Flex alignItems="center" height="100%">
-        <Link as={RouterLink} to="/" px="8px" bgColor="rgb(109 40 217 / 0.25)" height="100%" display="flex" alignItems="center" justifyContent="center">
-          <LogoLuna />
+        <Link as={RouterLink} to="/" px="0" height="100%" display="flex" alignItems="center" justifyContent="center">
+          {/* <LogoLuna /> */}
+          <PNGIcon name='logo' width={40} height={40} />
         </Link>
         <Stack spacing={2} direction="row" alignItems="center" fontWeight={600} fontSize="16px" height="100%" display={{ base: 'none', md: 'flex' }}>
           <CustomLink to="/" onClick={onClose}>
@@ -99,8 +100,8 @@ export default function Header({ onConnectedWallet, account, onDisconnect }: Pro
             fontWeight="bold"
             fontSize="1.125rem"
             lineHeight="10.75rem"
-            height="2.4rem"
-            padding={{ base: '0 12px', md: '0 5px' }}
+            height="3rem"
+            padding={{ base: '10px 12px', md: '10px 5px' }}
             onClick={onConnectedWallet}
             _hover={{
               color: '#fff',

@@ -10,12 +10,15 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import './assets/fonts/nunito-sans.woff2';
 import './assets/fonts/ubuntu-mono.woff2';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <ChakraProvider theme={theme}>
         <App />
+        <ToastContainer />
       </ChakraProvider>
     </BrowserRouter>
   </React.StrictMode>,

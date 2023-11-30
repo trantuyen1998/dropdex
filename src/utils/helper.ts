@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify';
+
 export const truncateAddress = (address) => {
   if (!address) return 'No Account';
   const match = address.match(/^(0x[a-zA-Z0-9]{2})[a-zA-Z0-9]+([a-zA-Z0-9]{2})$/);
@@ -138,4 +140,31 @@ export const getLongShort = (offerAsset: string, returnAsset: string) => {
   if (!offerAsset) return 'Buy';
   if (!returnAsset) return 'Sell';
   return offerAsset.length > returnAsset.length ? 'Sell' : 'Buy';
+};
+
+export const handleMetamaskError = (error: any) => {
+  let message = '';
+
+  switch (error.code) {
+    case -32002: {
+      message = 'Already processing request in Metamask. Please handle this before next action';
+      break;
+    }
+
+    default:
+      return;
+  }
+
+  toast.error(`<div>{message}</div>`, {
+    autoClose: 4000,
+    hideProgressBar: true,
+    closeOnClick: true,
+  });
+};
+
+export const formatPrice24h = (price: string) => {
+  const f = price.toString().split('.');
+  if (f.length > 0) return f[0] + '.' + f[1].slice(0, 2);
+
+  return price;
 };

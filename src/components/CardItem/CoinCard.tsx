@@ -1,22 +1,35 @@
 import { Box, Button, Flex, Image, Text, Theme, useTheme } from '@chakra-ui/react';
 import { PairType } from 'components/ListCoin/type';
+import { useGlobal } from 'hooks/useGlobal';
 import { memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Colors } from 'themes/colors';
-import { formatPrice } from 'utils/helper';
+import { formatPrice, formatPrice24h } from 'utils/helper';
 
-type Props = PairType;
+type Props = any;
 const CoinCard = (props: Props) => {
-  const { asset0, asset1, volume24H, fee, avgAPR, poolAmount, tvl, fee24H } = props;
+  const { attributes, id } = props;
   const navigate = useNavigate()
+  const { onHandlePair } = useGlobal()
   const theme = useTheme<Theme>();
   const colors = theme.colors as Colors;
+
+  const onHandleNavigate = () => {
+    const _name = attributes.name.replace(/\s/g, '');
+    const _newName = _name?.split('/') ?? []
+    const paramName = _newName.length > 1 ? `${_newName[0]}-${_newName[1]}` : 'null'
+
+    navigate(`/swap/${attributes.address}/pairs/${id}/name/${paramName}`)
+
+  }
 
   return (
     <Flex
       direction="column"
+      onClick={() => onHandleNavigate()}
       backgroundColor={colors.bgPrimary}
       borderRadius={'16px'}
+      cursor='pointer'
       role="group"
       transition=".3s ease all"
       p="15px"
@@ -30,21 +43,21 @@ const CoinCard = (props: Props) => {
         <Box>
           <Box display={'flex'} flexDirection={'row'}>
             <Box>
-              <Image src={asset0.symbol} width={'20px'} height={'20px'} />
+              <Image src={`https://storage.googleapis.com/ks-setting-1d682dca/428c44cb-9078-4820-b864-faf20a62c56e.png`} width={'20px'} height={'20px'} />
             </Box>
             <Box>
-              <Image src={asset1.symbol} width={'20px'} height={'20px'} />
+              <Image src={`https://storage.googleapis.com/ks-setting-1d682dca/b36e57ad-e80b-4ca9-8bf9-4719c6903d7d.png`} width={'20px'} height={'20px'} />
             </Box>
           </Box>
         </Box>
         <Box marginLeft={4}>
           <Text fontSize={'1.6rem'} fontFamily="Work Sans" fontWeight={500}>
-            {asset0.name} - {asset0.name}
+            {attributes.name}
           </Text>
         </Box>
         <Box marginLeft={4}>
           <Text fontSize={'1.2rem'} fontWeight={400} backgroundColor={'#1183B733'} borderRadius="10px" padding={'2px 6px'}>
-            Fee {fee}%
+            Fee {0}%
           </Text>
         </Box>
       </Box>
@@ -52,8 +65,8 @@ const CoinCard = (props: Props) => {
       <Text marginTop={'16px'} lineHeight={1} fontSize={'1.2rem'} color="#A9A9A9">
         Avg APR
       </Text>
-      <Text fontWeight={500} fontFamily={'Work Sans'} fontSize={'2.8rem'} color="rgb(15, 170, 162)">
-        {avgAPR ?? 0}%
+      <Text fontWeight={500} fontFamily={'Work Sans'} fontSize={'2.8rem'} color={attributes.price_percent_change.includes('+') ? `rgb(15, 170, 162)` : `red`}>
+        {attributes.price_percent_change ?? 0}
       </Text>
       <Box display={'flex'} justifyContent="space-between" borderBottomWidth={'1px'} borderColor="rgb(80, 80, 80)">
         <Box marginBottom={'1.6rem'}>
@@ -61,15 +74,15 @@ const CoinCard = (props: Props) => {
             Volume (24H)
           </Text>
           <Text fontWeight={500} fontFamily={'Work Sans'} fontSize={'1.6rem'} color="#FFF">
-            ${volume24H ?? 0}
+            ${formatPrice(formatPrice24h(attributes.to_volume_in_usd)) ?? 0}
           </Text>
         </Box>
         <Box>
           <Text marginTop={'16px'} lineHeight={1} fontSize={'1.2rem'} color="#A9A9A9">
-            Fees (24H)
+            Price (24H)
           </Text>
           <Text fontWeight={500} fontFamily={'Work Sans'} fontSize={'1.6rem'} color="#FFF">
-            ${fee24H ?? 0}
+            ${attributes?.price_in_usd?.slice(0, 4) ?? 0}
           </Text>
         </Box>
       </Box>
@@ -78,8 +91,8 @@ const CoinCard = (props: Props) => {
           <Text marginTop={'16px'} lineHeight={1} fontSize={'1.2rem'} color="#A9A9A9">
             TVL
           </Text>
-          <Text fontWeight={500} fontFamily={'Work Sans'} fontSize={'1.6rem'} color="#FFF">
-            ${tvl ?? 0}
+          <Text fontWeight={500} fontFamily={'Work Sans'} fontSize={'1.6rem'} color={attributes.price_percent_changes.last_24h.includes('+') ? `green` : `red`}>
+            {attributes.price_percent_changes.last_24h ?? 0}
           </Text>
         </Box>
         <Box>
@@ -87,7 +100,7 @@ const CoinCard = (props: Props) => {
             Total Liqidity
           </Text>
           <Text fontWeight={500} fontFamily={'Work Sans'} fontSize={'1.6rem'} color="#FFF">
-            ${formatPrice(poolAmount) ?? 0}
+            ${formatPrice24h(attributes.reserve_in_usd) ?? 0}
           </Text>
         </Box>
       </Box>
@@ -109,12 +122,12 @@ const CoinCard = (props: Props) => {
             <polyline points="7 23 3 19 7 15"></polyline>
             <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
           </svg>
-          <Text marginLeft={'10px'} fontSize="1.4rem" color={'#fff'} onClick={() => navigate(`/swap/aaa`)}>
+          <Text marginLeft={'10px'} fontSize="1.4rem" color={'#fff'}>
             Swap Token
           </Text>
         </Button>
       </Box>
-    </Flex>
+    </Flex >
   );
 };
 

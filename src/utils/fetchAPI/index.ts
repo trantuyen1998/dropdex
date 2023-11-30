@@ -4,7 +4,7 @@ import ConfigureAxios from './fetchApi';
 const axiosConfig = new ConfigureAxios({
   configure: {
     method: 'GET',
-    baseURL: 'https://api.h2e.finance',
+    baseURL: 'https://app.geckoterminal.com/api',
     timeout: 10000,
     paramsSerializer: qs.stringify,
   },

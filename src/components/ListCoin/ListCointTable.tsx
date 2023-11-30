@@ -1,5 +1,6 @@
 import { CopyIcon } from '@chakra-ui/icons';
 import { Box, Button, Center, Image, Spinner, Stack, Table, TableContainer, Tbody, Td, Text, Th, Thead, Theme, Tr, useDisclosure, useTheme } from '@chakra-ui/react';
+import { useGlobal } from 'hooks/useGlobal';
 import { isEmpty } from 'lodash';
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -7,18 +8,19 @@ import { Column, useBlockLayout, useTable } from 'react-table';
 import { FixedSizeList } from 'react-window';
 import { Colors } from 'themes/colors';
 import { FAKE_PAIRS } from 'utils/dummy/fake-pair';
-import { formatPrice, truncateAddress } from 'utils/helper';
+import { formatPrice, formatPrice24h, truncateAddress } from 'utils/helper';
 import './styles.css';
 import { ListCoinProps, PairType, Params } from './type';
 
-function ListCoinTable({ onChangeFilter, isReset }: ListCoinProps) {
+function ListCoinTable({ onChangeFilter, isReset, pairs }: ListCoinProps) {
   const theme = useTheme<Theme>();
   const colors = theme.colors as Colors;
   const { isOpen, onClose } = useDisclosure();
   const navigate = useNavigate()
+  const { onHandlePair } = useGlobal()
+
 
   const total = 10;
-  const pairs = FAKE_PAIRS as Array<PairType>;
   const [pageCount, setPageCount] = useState(0);
 
   const [filterObj, setFilterObj] = useState<Params>({
@@ -127,37 +129,36 @@ function ListCoinTable({ onChangeFilter, isReset }: ListCoinProps) {
     () => [
       {
         Header: 'TOKEN PAIR | FEE',
-        accessor: '',
-        Cell: ({ row }) => {
-          console.log('ROW', row.values);
+        accessor: 'attributes',
+        Cell: ({ row }: any) => {
           return (
             <Box>
               <Box display={'flex'} alignItems="center">
                 <Box>
                   <Box display={'flex'} flexDirection={'row'}>
                     <Box>
-                      <Image src={row.original.asset0.symbol ?? ''} width={'20px'} height={'20px'} />
+                      <Image src={`https://storage.googleapis.com/ks-setting-1d682dca/428c44cb-9078-4820-b864-faf20a62c56e.png`} width={'20px'} height={'20px'} />
                     </Box>
                     <Box>
-                      <Image src={row.original.asset1.symbol ?? ''} width={'20px'} height={'20px'} />
+                      <Image src={`https://storage.googleapis.com/ks-setting-1d682dca/b36e57ad-e80b-4ca9-8bf9-4719c6903d7d.png`} width={'20px'} height={'20px'} />
                     </Box>
                   </Box>
                 </Box>
                 <Box marginLeft={4}>
                   <Text fontSize={'1.6rem'} fontFamily="Work Sans" fontWeight={500}>
-                    {row.original.asset0.name ?? ''} - {row.original.asset0.name ?? ''}
+                    {row?.name ?? ''}
                   </Text>
                 </Box>
                 <Box marginLeft={4}>
                   <Text fontSize={'1.2rem'} fontWeight={400} backgroundColor={'#1183B733'} borderRadius="10px" padding={'2px 6px'}>
-                    Fee {row.original.fee ?? ''}%
+                    Fee {row.original.fee ?? 0}%
                   </Text>
                 </Box>
               </Box>
               <Box marginTop={'10px'} display={'flex'} fontSize={'14px'} alignItems="center" color={'#a9a9a9'}>
                 <CopyIcon fontSize={'14px'} />
                 <Text marginTop={'2px'} marginLeft={'8px'}>
-                  {truncateAddress('0xd6639f4f555b36831d888a0c0de9fed9682545e7')}
+                  {truncateAddress(row.original.attributes.address)}
                 </Text>
               </Box>
             </Box>
@@ -170,8 +171,8 @@ function ListCoinTable({ onChangeFilter, isReset }: ListCoinProps) {
         accessor: 'tvl',
         Cell: ({ row }) => {
           return (
-            <Text color="#FFF" fontSize={'1.4rem'}>
-              ${row?.original?.tvl ?? 0}
+            <Text color={row?.original?.attributes.price_percent_changes.last_24h.includes('+') ? `green` : `red`} fontSize={'1.4rem'}>
+              {row?.original?.attributes.price_percent_changes.last_24h ?? 0}
             </Text>
           );
         },
@@ -182,8 +183,8 @@ function ListCoinTable({ onChangeFilter, isReset }: ListCoinProps) {
         accessor: 'avgAPR',
         Cell: ({ row }) => {
           return (
-            <Text color="#0FAAA2" fontSize={'1.4rem'}>
-              {row?.original?.avgAPR ?? 0}%
+            <Text color={row?.original?.attributes.price_percent_change.includes('+') ? `rgb(15, 170, 162)` : `red`} fontSize={'1.4rem'}>
+              {formatPrice(formatPrice24h(row?.original?.attributes.price_percent_change)) ?? 0}%
             </Text>
           );
         },
@@ -195,19 +196,19 @@ function ListCoinTable({ onChangeFilter, isReset }: ListCoinProps) {
         Cell: ({ row }) => {
           return (
             <Text color="#FFF" fontSize={'1.4rem'}>
-              ${row?.original?.volume24H ?? 0}
+              ${formatPrice(formatPrice24h(row?.original?.attributes.to_volume_in_usd)) ?? 0}
             </Text>
           );
         },
         width: MAX_WIDTH / 6,
       },
       {
-        Header: `FEES (24H)`,
+        Header: `PRICE (24H)`,
         accessor: 'fee',
         Cell: ({ row }) => {
           return (
             <Text color="#FFF" fontSize={'1.4rem'}>
-              ${row?.original?.fee ?? 0}
+              ${row?.original?.attributes.price_in_usd?.slice(0, 4) ?? 0}
             </Text>
           );
         },
@@ -217,7 +218,7 @@ function ListCoinTable({ onChangeFilter, isReset }: ListCoinProps) {
         Header: `LIQIDITY`,
         accessor: 'totalSupply',
         Cell: ({ row }) => {
-          return <Text fontSize={'1.4rem'}>{formatPrice(row?.original?.poolAmount ?? 0)}</Text>;
+          return <Text fontSize={'1.4rem'}>{formatPrice24h(row?.original?.attributes.reserve_in_usd ?? 0)}</Text>;
         },
         width: MAX_WIDTH / 6,
       },
@@ -227,7 +228,14 @@ function ListCoinTable({ onChangeFilter, isReset }: ListCoinProps) {
         Cell: ({ row }) => {
           return (
             <Box width="100%" display={'flex'} justifyContent="flex-end">
-              <Box backgroundColor={'#321c6b8f'} cursor="pointer" width="fit-content" padding={'10px'} borderRadius="50%" onClick={() => navigate(`/swap/aaa`)}>
+              <Box backgroundColor={'#321c6b8f'} cursor="pointer" width="fit-content" padding={'10px'} borderRadius="50%" onClick={() => {
+
+
+                const _name = row.original.attributes.name.replace(/\s/g, '');
+                const _newName = _name?.split('/') ?? []
+                const paramName = _newName.length > 1 ? `${_newName[0]}-${_newName[1]}` : 'null'
+                navigate(`/swap/${row.original.attributes.address}/pairs/${row.original.id}/name/${paramName}`)
+              }}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"

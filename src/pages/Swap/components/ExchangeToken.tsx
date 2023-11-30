@@ -5,28 +5,18 @@ import {
   AccordionItem,
   AccordionPanel,
   Box,
-  Button,
-  Center,
-  Collapse,
-  Image,
-  Input,
-  Spinner,
-  Text,
-  Theme,
-  useDisclosure,
-  useTheme,
+  Button, Image,
+  Input, Text
 } from '@chakra-ui/react';
-import { useGetContextSwap } from 'hooks/useGetContextSwap';
-import { useGetPairByAddress } from 'hooks/useGetPairByAddress';
-import { useGetTx } from 'hooks/useGetTx';
-import { isEmpty } from 'lodash';
-import { Pairs, Tx } from 'models/Pairs';
-import { useHomeStore } from 'pages/Home/store/useHomeStore';
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { Colors } from 'themes/colors';
+import { useWeb3 } from 'hooks/useWeb3';
 
-export const ExchangeToken = () => {
+interface Props {
+  from: string;
+  to: string
+}
+
+export const ExchangeToken = ({ from, to }: Props) => {
+  const { address, connectWallet } = useWeb3()
   return (
     <Box maxW={'425px'} background="#1c1c1c" height={500} padding="16px" borderRadius={'16px'}>
       <Box background={'#0f0f0f'} margin="0" padding={'12px'} borderRadius="16px">
@@ -56,7 +46,7 @@ export const ExchangeToken = () => {
               borderRadius={'999px'}>
               <Image width={'20px'} height="20px" src="https://storage.googleapis.com/ks-setting-1d682dca/9412b9e7-161f-472e-94b2-a62d2c386ab7.png" />
               <Text lineHeight={1} margin={'0 10px'}>
-                ETH
+                {from}
               </Text>
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
@@ -149,7 +139,7 @@ export const ExchangeToken = () => {
         </Box>
         <Box display={'flex'} alignItems="center">
           <Box flex={1} marginLeft="-12px">
-            <Input placeholder="0.0" value={10002} fontSize="2.4rem" border={'none'} _focus={{ border: 'none' }} />
+            <Input placeholder="0.0" value={0} fontSize="2.4rem" border={'none'} _focus={{ border: 'none' }} />
           </Box>
           <Box flex={1} display="flex" justifyContent={'flex-end'}>
             <Box
@@ -163,7 +153,7 @@ export const ExchangeToken = () => {
               borderRadius={'999px'}>
               <Image width={'20px'} height="20px" src="https://storage.googleapis.com/ks-setting-1d682dca/6e5645d9-4388-4916-b87d-8e5d3952df5f.png" />
               <Text lineHeight={1} margin={'0 10px'}>
-                MATIC
+                {to}
               </Text>
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
@@ -175,7 +165,7 @@ export const ExchangeToken = () => {
         </Box>
       </Box>
 
-      <Button mt={'16px'} borderRadius={'999px'} height={'3.6rem'} padding="10px" backgroundColor={'#321C6B'} alignItems="center" display={'flex'} width="100%">
+      <Button mt={'16px'} borderRadius={'999px'} height={'3.6rem'} padding="10px" backgroundColor={'#321C6B'} alignItems="center" display={'flex'} width="100%" onClick={address ? () => { } : connectWallet}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16"
@@ -193,7 +183,7 @@ export const ExchangeToken = () => {
           <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
         </svg>
         <Text marginLeft={'10px'} fontSize="1.4rem" color={'#fff'}>
-          Swap Token
+          {address ? `Swap Token` : `Connect wallet`}
         </Text>
       </Button>
 

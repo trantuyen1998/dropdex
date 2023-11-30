@@ -15,7 +15,7 @@ export default function ModalWallet({ onConnectWallet, ...props }: ModalWalletPr
   return (
     <Modal isCentered preserveScrollBarGap blockScrollOnMount={false} {...props}>
       {OverlayOne()}
-      <ModalContent position="relative" maxHeight="70vh" w="90vw" maxW="22rem" bgColor={colors.bgPrimary} p={4} border={'0.5px solid #56545d'}>
+      <ModalContent position="relative" maxHeight="70vh" w="90vw" maxW="35rem" bgColor={colors.bgPrimary} p={4} border={'0.5px solid #56545d'}>
         <ModalCloseButton
           position="absolute"
           top={-5}

@@ -1,9 +1,7 @@
 import {
   Box,
   Button,
-  ButtonGroup,
-  IconButton,
-  Input,
+  ButtonGroup, Input,
   InputGroup,
   InputRightElement,
   Menu,
@@ -16,7 +14,7 @@ import {
   Text,
   Theme,
   useDisclosure,
-  useTheme,
+  useTheme
 } from '@chakra-ui/react';
 import ListCoin from 'components/ListCoin/ListCoin';
 import ListCointTable from 'components/ListCoin/ListCointTable';
@@ -24,21 +22,13 @@ import ModalFilterSetting from 'components/ModalFilterSetting/ModalFilterSetting
 import useWindowDimensions from 'hooks/useDimension';
 import { Option } from 'models/Options';
 import { QueryPair } from 'models/Pairs';
-import { memo, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Colors } from 'themes/colors';
 import { v4 as uuid } from 'uuid';
 
-const tabs: Option[] = [
-  { id: uuid(), title: 'Top', value: 'top' },
-  { id: uuid(), title: 'All', value: 'all' },
-  { id: uuid(), title: 'New', value: 'new' },
-  { id: uuid(), title: 'Starred', value: 'starred' },
-];
-const tabs2 = [
-  { id: 0, title: 'Juno', icon: 'https://coinhall.org/assets/chain_logos/juno.png', value: 'Juno' },
-  { id: 1, title: 'Osmosis', icon: 'https://coinhall.org/assets/chain_logos/osmo.svg', value: 'Osmosis' },
-];
+
+
 
 const options1: Option[] = [
   {
@@ -128,9 +118,10 @@ const options2 = [
 interface FilterListProps {
   onChangeValue: (value: QueryPair) => void;
   loading: boolean;
+  pairs: Array<any>
 }
 
-function FilterCoinList({ onChangeValue, loading }: FilterListProps) {
+function FilterCoinList({ onChangeValue, pairs, loading }: FilterListProps) {
   const theme = useTheme<Theme>();
   const { isOpen, onClose, onOpen } = useDisclosure();
   const windowDimensions = useWindowDimensions();
@@ -172,7 +163,7 @@ function FilterCoinList({ onChangeValue, loading }: FilterListProps) {
 
   const handleTabsChange = (index: number) => {
     setIndexTab(index);
-    onChangeValue({ ...filterObj, tab: tabs[index].value, offset: 0 });
+
   };
 
   const handleChangePage = (value: number) => {
@@ -225,30 +216,12 @@ function FilterCoinList({ onChangeValue, loading }: FilterListProps) {
     }
   };
 
-  const handleChangeChains = (value, indx) => {
-    let newChange: string[] = [...chains];
-    const valueReset = [...newChange].filter((item) => item);
-    if (newChange[indx]) {
-      newChange[indx] = '';
-      if (valueReset.length == 1) {
-        newChange = tabs2.map((item) => item.value);
-      }
-    } else {
-      newChange[indx] = value;
-    }
-    setChains(newChange);
-    const filterValue = newChange.filter((item) => item);
-    setFilterObj((prev) => ({
-      ...prev,
-      chains: filterValue,
-    }));
-  };
-
   const renderCoin = () => {
     if (windowDimensions.width > 1440) {
       if (isTable) {
         return (
           <ListCointTable
+            pairs={pairs}
             loading={false}
             onChangeFilter={(params) =>
               setFilterObj((prev) => ({
@@ -262,6 +235,7 @@ function FilterCoinList({ onChangeValue, loading }: FilterListProps) {
       } else {
         return (
           <ListCoin
+            pairs={pairs}
             loading={false}
             onChangeFilter={(params) =>
               setFilterObj((prev) => ({
@@ -276,6 +250,7 @@ function FilterCoinList({ onChangeValue, loading }: FilterListProps) {
     } else {
       return (
         <ListCoin
+          pairs={pairs}
           loading={false}
           onChangeFilter={(params) =>
             setFilterObj((prev) => ({
@@ -475,9 +450,7 @@ function FilterCoinList({ onChangeValue, loading }: FilterListProps) {
       </Box>
 
       <TabPanels>
-        {tabs.map((i) => {
-          return <TabPanel key={i.id}>{renderCoin()}</TabPanel>;
-        })}
+        <TabPanel >{renderCoin()}</TabPanel>;
       </TabPanels>
 
       <ModalFilterSetting

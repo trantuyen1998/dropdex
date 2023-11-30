@@ -1,6 +1,7 @@
 import Web3Modal from 'web3modal';
 import { useState, useEffect } from 'react';
 import { providers } from 'ethers';
+import { handleMetamaskError } from 'utils/helper';
 
 export const useWeb3 = () => {
   const [web3Modal, setWeb3Modal] = useState<null | Web3Modal>(null);
@@ -13,7 +14,7 @@ export const useWeb3 = () => {
 
     const newWeb3Modal = new Web3Modal({
       cacheProvider: true,
-      network: 'mainnet',
+      network: 'testnet',
       providerOptions,
     });
 
@@ -37,15 +38,19 @@ export const useWeb3 = () => {
   }, [web3Modal]);
 
   const connectWallet = async () => {
-    if (!!web3Modal) {
-      const providerWeb3 = await web3Modal.connect();
-      const ethersProvider = new providers.Web3Provider(providerWeb3);
-      const userAddress = await ethersProvider.getSigner().getAddress();
-      setAddress(userAddress);
-      setProvider(ethersProvider);
-    }
+    try {
+      if (!!web3Modal) {
+        const providerWeb3 = await web3Modal.connect();
+        const ethersProvider = new providers.Web3Provider(providerWeb3);
+        const userAddress = await ethersProvider.getSigner().getAddress();
+        setAddress(userAddress);
+        setProvider(ethersProvider);
+      }
 
-    setConnected(true);
+      setConnected(true);
+    } catch (error) {
+      handleMetamaskError(error);
+    }
   };
 
   const disconnect = async () => {

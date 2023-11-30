@@ -2,9 +2,7 @@ import { ethers } from 'ethers';
 import Layout from 'layout/Layout';
 import Home from 'pages/Home/Home';
 import Login from 'pages/Login/Login';
-import Pairs from 'pages/Pairs/Pairs';
 import Subscribe from 'pages/Subscribe/Subscribe';
-import Swap from 'pages/Swap/Swap';
 import SwapChart from 'pages/Swap/SwapChart';
 import SwapCoin from 'pages/Swap/SwapCoin';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -24,7 +22,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/staking" element={<Subscribe />} />
             <Route path="/swap" element={<SwapCoin />} />
-            <Route path="/swap/:pairAddress" element={<SwapChart />} />
+            <Route path="/swap/:pairAddress/pairs/:pairId/name/:name" element={<SwapChart />} />
             <Route
               path="*"
               element={

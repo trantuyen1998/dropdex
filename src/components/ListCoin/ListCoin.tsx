@@ -8,31 +8,26 @@ import {
   ModalOverlay,
   SimpleGrid,
   Spinner,
-  Stack,
-  Text,
-  Theme,
+  Stack, Theme,
   useDisclosure,
-  useTheme,
+  useTheme
 } from '@chakra-ui/react';
-import CardItem from 'components/CardItem/CardItem';
 import CoinCard from 'components/CardItem/CoinCard';
 import DashboardSettings from 'components/DashboardSettings/DashboardSettings';
 import { isEmpty } from 'lodash';
-import { useHomeStore } from 'pages/Home/store/useHomeStore';
 import { memo, useEffect, useState } from 'react';
 import { Colors } from 'themes/colors';
 import { FAKE_PAIRS } from 'utils/dummy/fake-pair';
 import './styles.css';
 import { ListCoinProps, PairType, Params } from './type';
 
-function ListCoin({ onChangeFilter, isReset, loading }: ListCoinProps) {
+function ListCoin({ onChangeFilter, isReset, loading, pairs }: ListCoinProps) {
   const theme = useTheme<Theme>();
   const colors = theme.colors as Colors;
 
   const { isOpen, onClose } = useDisclosure();
 
   const total = 10;
-  const pairs = FAKE_PAIRS as Array<PairType>;
   const [pageCount, setPageCount] = useState(0);
 
   const [filterObj, setFilterObj] = useState<Params>({
@@ -106,6 +101,7 @@ function ListCoin({ onChangeFilter, isReset, loading }: ListCoinProps) {
       </svg>
     </Button>
   );
+
 
   const prevButton = (
     <Button

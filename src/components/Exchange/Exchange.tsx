@@ -2,11 +2,11 @@ import { Box, Button, Center, Flex, Spinner, Text, Theme, useTheme } from '@chak
 import ItemExchange, { ExchangType } from 'components/ItemExchange/ItemExchange';
 import Slippage from 'components/Slippage/Slippage';
 import { SVGIcon } from 'components/SVGIcon/SVGIcon';
-import { add, isEmpty } from 'lodash';
-import { InfoCoinItem, PairInfoContext, Pairs } from 'models/Pairs';
+import { isEmpty } from 'lodash';
+import { InfoCoinItem, PairInfoContext } from 'models/Pairs';
 import { FC, useEffect, useState } from 'react';
 import { Colors } from 'themes/colors';
-import { formatPriceApicompare, getTitleDex, trunceHash } from 'utils/helper';
+import { getTitleDex, trunceHash } from 'utils/helper';
 
 interface IProp {
   pairInfo: PairInfoContext;
@@ -29,8 +29,6 @@ const Exchange: FC<IProp> = ({ pairInfo, swapToken, swapDisable, connected, addr
 
   const theme = useTheme<Theme>();
   const colors = theme.colors as Colors;
-
-  console.log('price', exchangePair);
   const handleChange = () => {
     if (exchanges) {
       setExchangePair(pairInfo.baseAsset);
@@ -111,7 +109,7 @@ const Exchange: FC<IProp> = ({ pairInfo, swapToken, swapDisable, connected, addr
             />
           </Box>
           <Button
-            onClick={connected ? swapToken : () => {}}
+            onClick={connected ? swapToken : () => { }}
             fontSize={'18px'}
             fontWeight="600"
             color={colors.light2}

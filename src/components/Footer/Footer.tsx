@@ -23,7 +23,7 @@ function Footer() {
         </Link>
       </Stack>
       <Text color="#64748B" fontSize={12} py="10px">
-        Ⓒ Copyright 2022 DLM Coin
+        Ⓒ Copyright 2023 Dropdex
       </Text>
     </Box>
   );

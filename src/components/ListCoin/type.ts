@@ -6,6 +6,7 @@ export interface ListCoinProps {
   filterWith?: string;
   isReset?: boolean;
   loading: boolean;
+  pairs: any;
   onChangeFilter?: (params: Params) => void;
 }
 

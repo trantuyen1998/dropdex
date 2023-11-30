@@ -19,9 +19,7 @@ export interface PairItem {
 }
 
 export interface PairResponse {
-  next: number;
-  pairs: Pairs[];
-  total: number;
+  data: any;
 }
 
 export interface PairInfoContext {

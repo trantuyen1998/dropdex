@@ -1,23 +1,23 @@
-import { CopyIcon } from '@chakra-ui/icons';
-import { Box, Button, Center, Image, Spinner, Stack, Table, TableContainer, Tbody, Td, Text, Th, Thead, Theme, Tr, useDisclosure, useTheme } from '@chakra-ui/react';
+import { Box, Button, Center, Spinner, Stack, Table, TableContainer, Tbody, Td, Text, Th, Thead, Theme, Tr, useDisclosure, useTheme } from '@chakra-ui/react';
+import { useWeb3 } from 'hooks/useWeb3';
 import { isEmpty } from 'lodash';
-import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Column, useBlockLayout, useTable } from 'react-table';
 import { FixedSizeList } from 'react-window';
 import { Colors } from 'themes/colors';
 import { FAKE_PAIRS } from 'utils/dummy/fake-pair';
-import { formatPrice, truncateAddress } from 'utils/helper';
+import { formatPrice, formatPrice24h, truncateAddress } from 'utils/helper';
 import './styles.css';
 import { ListCoinProps, PairType, Params } from './type';
 
-function ListTxCoin({ onChangeFilter, isReset }: ListCoinProps) {
+function ListTxCoin({ onChangeFilter, isReset, pairs }: ListCoinProps) {
   const theme = useTheme<Theme>();
   const colors = theme.colors as Colors;
 
   const { isOpen, onClose } = useDisclosure();
 
+
   const total = 10;
-  const pairs = FAKE_PAIRS as Array<PairType>;
   const [pageCount, setPageCount] = useState(0);
 
   const [filterObj, setFilterObj] = useState<Params>({
@@ -128,11 +128,10 @@ function ListTxCoin({ onChangeFilter, isReset }: ListCoinProps) {
         Header: 'Date',
         accessor: '',
         Cell: ({ row }) => {
-          console.log('ROW', row.values);
           return (
             <Box>
               <Text marginTop={'2px'} marginLeft={'8px'}>
-                {truncateAddress('0xd6639f4f555b36831d888a0c0de9fed9682545e7')}
+                {row?.original?.attributes.timestamp}
               </Text>
             </Box>
           );
@@ -154,36 +153,36 @@ function ListTxCoin({ onChangeFilter, isReset }: ListCoinProps) {
         width: MAX_WIDTH / 6,
       },
       {
-        Header: `Price`,
-        accessor: 'avgAPR',
-        Cell: ({ row }) => {
-          return (
-            <Text color="#0FAAA2" fontSize={'1.4rem'}>
-              {row?.original?.avgAPR ?? 0}%
-            </Text>
-          );
-        },
-        width: MAX_WIDTH / 6,
-      },
-      {
-        Header: 'Amount',
+        Header: 'Price (USD)',
         accessor: 'volume',
         Cell: ({ row }) => {
           return (
             <Text color="#FFF" fontSize={'1.4rem'}>
-              ${row?.original?.volume24H ?? 0}
+              ${formatPrice24h(row?.original?.attributes.price_to_in_usd) ?? 0}
             </Text>
           );
         },
         width: MAX_WIDTH / 6,
       },
       {
-        Header: `Amount`,
+        Header: `TOTAL (FROM)`,
         accessor: 'fee',
         Cell: ({ row }) => {
           return (
             <Text color="#FFF" fontSize={'1.4rem'}>
-              ${row?.original?.fee ?? 0}
+              ${formatPrice24h(row?.original?.attributes.from_token_amount) ?? 0}
+            </Text>
+          );
+        },
+        width: MAX_WIDTH / 6,
+      },
+      {
+        Header: `Total (USD)`,
+        accessor: 'totalusd',
+        Cell: ({ row }) => {
+          return (
+            <Text color="#FFF" fontSize={'1.4rem'}>
+              ${formatPrice24h(row?.original?.attributes.from_token_total_in_usd) ?? 0}
             </Text>
           );
         },
@@ -193,7 +192,7 @@ function ListTxCoin({ onChangeFilter, isReset }: ListCoinProps) {
         Header: `Trader`,
         accessor: 'totalSupply',
         Cell: ({ row }) => {
-          return <Text fontSize={'1.4rem'}>{formatPrice(row?.original?.poolAmount ?? 0)}</Text>;
+          return <Text fontSize={'1.4rem'}>{truncateAddress(row.original.attributes.tx_from_address)}</Text>;
         },
         width: MAX_WIDTH / 6,
       },
@@ -202,26 +201,29 @@ function ListTxCoin({ onChangeFilter, isReset }: ListCoinProps) {
         accessor: 'txHash',
         Cell: ({ row }) => {
           return (
-            <Box width="100%" display={'flex'} justifyContent="flex-end">
-              <Box backgroundColor={'#321c6b8f'} cursor="pointer" width="fit-content" padding={'10px'} borderRadius="50%" onClick={() => {}}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  color="#fff"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round">
-                  <polyline points="17 1 21 5 17 9"></polyline>
-                  <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
-                  <polyline points="7 23 3 19 7 15"></polyline>
-                  <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
-                </svg>
+            <a href={`https://etherscan.io/tx/${row.original.attributes.tx_hash}`} target="_blank">
+              <Box width="100%" display={'flex'} justifyContent="flex-end">
+                <Box backgroundColor={'#321c6b8f'} cursor="pointer" width="fit-content" padding={'10px'} borderRadius="50%" onClick={() => { }}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    color="#fff"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <polyline points="17 1 21 5 17 9"></polyline>
+                    <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
+                    <polyline points="7 23 3 19 7 15"></polyline>
+                    <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
+                  </svg>
+
+                </Box>
               </Box>
-            </Box>
+            </a>
           );
         },
         width: MAX_WIDTH / 6,

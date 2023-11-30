@@ -7,11 +7,10 @@ interface IProp {
   pairAddress?: string;
 }
 const TraddingViewChart: FC<IProp> = ({ symbol, contractAddress, pairAddress }) => {
-  console.log('symbol, contractAddress, pairAddress', symbol);
-  const datafeed = getDataFeed({ symbol, contractAddress, pairAddress });
+  const datafeed = getDataFeed({ symbol: symbol.replace('-', ''), contractAddress, pairAddress });
   useEffect(() => {
     const widgetOptions = {
-      symbol: `Bitfinex:ETH/USD`,
+      symbol: `Bitfinex:${symbol.replace('-', '/')}`,
       datafeed: datafeed,
       interval: '1d',
       container_id: 'tv_chart_container',
