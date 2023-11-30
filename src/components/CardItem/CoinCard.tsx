@@ -8,6 +8,7 @@ import { formatPrice } from 'utils/helper';
 type Props = PairType;
 const CoinCard = (props: Props) => {
   const { asset0, asset1, volume24H, fee, avgAPR, poolAmount, tvl, fee24H } = props;
+  const navigate = useNavigate()
   const theme = useTheme<Theme>();
   const colors = theme.colors as Colors;
 
@@ -20,7 +21,7 @@ const CoinCard = (props: Props) => {
       transition=".3s ease all"
       p="15px"
       position="relative"
-      onClick={() => {}}
+
       _hover={{
         bgColor: '#6d28d930',
         border: '1px solid rgb(80, 80, 80)',
@@ -108,7 +109,7 @@ const CoinCard = (props: Props) => {
             <polyline points="7 23 3 19 7 15"></polyline>
             <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
           </svg>
-          <Text marginLeft={'10px'} fontSize="1.4rem" color={'#fff'}>
+          <Text marginLeft={'10px'} fontSize="1.4rem" color={'#fff'} onClick={() => navigate(`/swap/aaa`)}>
             Swap Token
           </Text>
         </Button>

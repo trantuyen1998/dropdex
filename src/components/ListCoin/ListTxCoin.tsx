@@ -2,7 +2,6 @@ import { CopyIcon } from '@chakra-ui/icons';
 import { Box, Button, Center, Image, Spinner, Stack, Table, TableContainer, Tbody, Td, Text, Th, Thead, Theme, Tr, useDisclosure, useTheme } from '@chakra-ui/react';
 import { isEmpty } from 'lodash';
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Column, useBlockLayout, useTable } from 'react-table';
 import { FixedSizeList } from 'react-window';
 import { Colors } from 'themes/colors';
@@ -11,11 +10,11 @@ import { formatPrice, truncateAddress } from 'utils/helper';
 import './styles.css';
 import { ListCoinProps, PairType, Params } from './type';
 
-function ListCoinTable({ onChangeFilter, isReset }: ListCoinProps) {
+function ListTxCoin({ onChangeFilter, isReset }: ListCoinProps) {
   const theme = useTheme<Theme>();
   const colors = theme.colors as Colors;
+
   const { isOpen, onClose } = useDisclosure();
-  const navigate = useNavigate()
 
   const total = 10;
   const pairs = FAKE_PAIRS as Array<PairType>;
@@ -122,63 +121,40 @@ function ListCoinTable({ onChangeFilter, isReset }: ListCoinProps) {
     </Button>
   );
 
-  const MAX_WIDTH = 1178;
+  const MAX_WIDTH = 1300;
   const columns: Column<any>[] = useMemo(
     () => [
       {
-        Header: 'TOKEN PAIR | FEE',
+        Header: 'Date',
         accessor: '',
         Cell: ({ row }) => {
           console.log('ROW', row.values);
           return (
             <Box>
-              <Box display={'flex'} alignItems="center">
-                <Box>
-                  <Box display={'flex'} flexDirection={'row'}>
-                    <Box>
-                      <Image src={row.original.asset0.symbol ?? ''} width={'20px'} height={'20px'} />
-                    </Box>
-                    <Box>
-                      <Image src={row.original.asset1.symbol ?? ''} width={'20px'} height={'20px'} />
-                    </Box>
-                  </Box>
-                </Box>
-                <Box marginLeft={4}>
-                  <Text fontSize={'1.6rem'} fontFamily="Work Sans" fontWeight={500}>
-                    {row.original.asset0.name ?? ''} - {row.original.asset0.name ?? ''}
-                  </Text>
-                </Box>
-                <Box marginLeft={4}>
-                  <Text fontSize={'1.2rem'} fontWeight={400} backgroundColor={'#1183B733'} borderRadius="10px" padding={'2px 6px'}>
-                    Fee {row.original.fee ?? ''}%
-                  </Text>
-                </Box>
-              </Box>
-              <Box marginTop={'10px'} display={'flex'} fontSize={'14px'} alignItems="center" color={'#a9a9a9'}>
-                <CopyIcon fontSize={'14px'} />
-                <Text marginTop={'2px'} marginLeft={'8px'}>
-                  {truncateAddress('0xd6639f4f555b36831d888a0c0de9fed9682545e7')}
-                </Text>
-              </Box>
+              <Text marginTop={'2px'} marginLeft={'8px'}>
+                {truncateAddress('0xd6639f4f555b36831d888a0c0de9fed9682545e7')}
+              </Text>
             </Box>
           );
         },
-        width: 300,
+        width: 100,
       },
       {
-        Header: 'TVL',
+        Header: 'Type',
         accessor: 'tvl',
         Cell: ({ row }) => {
           return (
-            <Text color="#FFF" fontSize={'1.4rem'}>
-              ${row?.original?.tvl ?? 0}
-            </Text>
+            <Box>
+              <Text color="#FFF" fontSize={'1.4rem'}>
+                ${row?.original?.tvl ?? 0}
+              </Text>
+            </Box>
           );
         },
         width: MAX_WIDTH / 6,
       },
       {
-        Header: `APR`,
+        Header: `Price`,
         accessor: 'avgAPR',
         Cell: ({ row }) => {
           return (
@@ -190,7 +166,7 @@ function ListCoinTable({ onChangeFilter, isReset }: ListCoinProps) {
         width: MAX_WIDTH / 6,
       },
       {
-        Header: 'VOLUME (24H)',
+        Header: 'Amount',
         accessor: 'volume',
         Cell: ({ row }) => {
           return (
@@ -202,7 +178,7 @@ function ListCoinTable({ onChangeFilter, isReset }: ListCoinProps) {
         width: MAX_WIDTH / 6,
       },
       {
-        Header: `FEES (24H)`,
+        Header: `Amount`,
         accessor: 'fee',
         Cell: ({ row }) => {
           return (
@@ -214,7 +190,7 @@ function ListCoinTable({ onChangeFilter, isReset }: ListCoinProps) {
         width: MAX_WIDTH / 6,
       },
       {
-        Header: `LIQIDITY`,
+        Header: `Trader`,
         accessor: 'totalSupply',
         Cell: ({ row }) => {
           return <Text fontSize={'1.4rem'}>{formatPrice(row?.original?.poolAmount ?? 0)}</Text>;
@@ -227,7 +203,7 @@ function ListCoinTable({ onChangeFilter, isReset }: ListCoinProps) {
         Cell: ({ row }) => {
           return (
             <Box width="100%" display={'flex'} justifyContent="flex-end">
-              <Box backgroundColor={'#321c6b8f'} cursor="pointer" width="fit-content" padding={'10px'} borderRadius="50%" onClick={() => navigate(`/swap/aaa`)}>
+              <Box backgroundColor={'#321c6b8f'} cursor="pointer" width="fit-content" padding={'10px'} borderRadius="50%" onClick={() => {}}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -324,7 +300,7 @@ function ListCoinTable({ onChangeFilter, isReset }: ListCoinProps) {
             ))}
           </Thead>
           <Tbody {...getTableBodyProps()} width="100%">
-            <FixedSizeList itemSize={70} height={700} width={totalColumnsWidth} itemCount={pairs.length}>
+            <FixedSizeList itemSize={40} height={400} width={totalColumnsWidth} itemCount={pairs.length}>
               {RenderRow}
             </FixedSizeList>
           </Tbody>
@@ -343,4 +319,4 @@ function ListCoinTable({ onChangeFilter, isReset }: ListCoinProps) {
   );
 }
 
-export default memo(ListCoinTable);
+export default ListTxCoin;

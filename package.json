@@ -5,22 +5,18 @@
   "dependencies": {
     "@chakra-ui/icons": "^1.1.7",
     "@chakra-ui/react": "^1.8.8",
-    "@cosmjs/cosmwasm-stargate": "^0.30.0",
-    "@cosmjs/proto-signing": "^0.30.0",
-    "@cosmjs/stargate": "^0.30.0",
     "@craco/craco": "^6.4.3",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "@fontsource/nunito": "^4.5.8",
     "@fontsource/open-sans": "^4.5.8",
     "@fontsource/roboto": "^4.5.5",
-    "@keplr-wallet/types": "^0.11.48",
     "@typechain/ethers-v5": "^10.0.0",
     "axios": "^0.27.2",
     "craco-alias": "^3.0.1",
     "dayjs": "^1.11.2",
     "ethers": "^5.6.5",
-    "framer-motion": "^3.10.6",
+    "framer-motion": "^6",
     "husky": "^8.0.1",
     "i18next": "^21.8.0",
     "i18next-browser-languagedetector": "^6.1.4",
@@ -70,19 +66,18 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-react-hooks": "^4.3.0",
+    "node-sass": "^7.0.1",
     "prettier": "^2.5.1",
     "typescript": "^4.4.2"
   },
   "scripts": {
-    "start": "PORT=4222 & DISABLE_ESLINT_PLUGIN=true craco start",
-    "build": "react-scripts build",
+    "start": "PORT=4222 craco start ",
+    "build": "craco build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "check:type": "tsc --project tsconfig.json --noEmit",
     "lint": "eslint . --ext ts,tsx",
-    "generate-types": "typechain --target ethers-v5 --out-dir src/contracts/types './src/contracts/abi/**/*.json'",
-    "setup-deploy:prod": "pm2 deploy ecosystem.config.js production setup",
-    "deploy:prod": "pm2 deploy ecosystem.config.js production"
+    "generate-types": "typechain --target ethers-v5 --out-dir src/contracts/types './src/contracts/abi/**/*.json'"
   },
   "eslintConfig": {
     "extends": [

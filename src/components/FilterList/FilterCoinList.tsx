@@ -243,6 +243,7 @@ function FilterCoinList({ onChangeValue, loading }: FilterListProps) {
       chains: filterValue,
     }));
   };
+
   const renderCoin = () => {
     if (windowDimensions.width > 1440) {
       if (isTable) {
@@ -492,4 +493,4 @@ function FilterCoinList({ onChangeValue, loading }: FilterListProps) {
   );
 }
 
-export default memo(FilterCoinList);
+export default FilterCoinList;

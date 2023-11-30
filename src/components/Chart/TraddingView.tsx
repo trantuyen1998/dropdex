@@ -1,16 +1,17 @@
-import { FC, memo, useEffect, useState } from 'react';
+import { FC, useEffect } from 'react';
 import getDataFeed from './api/datafeed';
 
 interface IProp {
   symbol: string;
-  contractAddress: string;
-  pairAddress: string;
+  contractAddress?: string;
+  pairAddress?: string;
 }
 const TraddingViewChart: FC<IProp> = ({ symbol, contractAddress, pairAddress }) => {
+  console.log('symbol, contractAddress, pairAddress', symbol);
   const datafeed = getDataFeed({ symbol, contractAddress, pairAddress });
   useEffect(() => {
     const widgetOptions = {
-      symbol: `Terra:${symbol}`,
+      symbol: `Bitfinex:ETH/USD`,
       datafeed: datafeed,
       interval: '1d',
       container_id: 'tv_chart_container',
@@ -32,7 +33,7 @@ const TraddingViewChart: FC<IProp> = ({ symbol, contractAddress, pairAddress }) 
       theme: 'dark',
       overrides: {
         'mainSeriesProperties.showCountdown': true,
-        'paneProperties.background': '#182033',
+        'paneProperties.background': '#1c1c1c',
         'paneProperties.backgroundType': 'solid',
         'paneProperties.vertGridProperties.color': '#363c4e',
         'paneProperties.horzGridProperties.color': '#363c4e',
